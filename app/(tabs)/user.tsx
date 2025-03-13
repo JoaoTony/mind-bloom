@@ -1,20 +1,8 @@
 import {FC} from "react"
-import { Text, View } from "react-native"
+import UserSettings from "@/screens/user"
 
-const User: FC = () => {
-  return(
-    <View
-      style={{
-        flex: 1,
-        width: '100%',
-        height: '100%',
-         alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      <Text>USER</Text>
-    </View>
-  )
-}
+const User: FC = () => (
+  <UserSettings />
+)
 
 export default User

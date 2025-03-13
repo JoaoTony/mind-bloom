@@ -9,6 +9,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarActiveTintColor: '#2E4A66'
       }}
+      // backBehavior="history"
     >
       <Tabs.Screen
         name="index"
