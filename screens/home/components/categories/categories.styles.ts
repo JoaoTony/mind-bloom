@@ -30,6 +30,6 @@ export const homeCategoriesStyles = StyleSheet.create({
     fontWeight: 800,
     color: '#4b4f59',
     marginBottom: 10
-  }
+  },
 
 })
