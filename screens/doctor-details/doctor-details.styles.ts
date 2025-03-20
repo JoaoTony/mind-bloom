@@ -7,17 +7,19 @@ export const doctorDetailsSyles = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: '#e2e7f3',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-end'
   },
   header: {
     width: '100%',
     height: 100,
     justifyContent: 'flex-end',
     padding: 16,
+    position: 'fixed',
+    zIndex: 3,
   },
   content: {
     width: '100%',
-    height: height * 0.4,
+    // height: height * 0.4,
     backgroundColor: '#fff',
     padding: 16,
     paddingTop: 20,
@@ -31,7 +33,7 @@ export const doctorDetailsSyles = StyleSheet.create({
   },
   image: {
     height: '100%',
-    maxWidth: '70%'
+    maxWidth: '70%',
   },
   name: {
     fontSize: 24,
@@ -58,7 +60,8 @@ export const doctorDetailsSyles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 10,
-    marginTop: 50
+    gap: 20,
+    marginTop: 40,
+    marginBottom: 40
   }
 })
