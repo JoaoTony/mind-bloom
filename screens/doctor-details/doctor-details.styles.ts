@@ -54,7 +54,7 @@ export const doctorDetailsSyles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    color: '#6d6f7480',
+    color: '#6d6f74',
   },
   social: {
     width: '100%',

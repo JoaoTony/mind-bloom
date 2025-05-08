@@ -63,5 +63,11 @@ export const styles = StyleSheet.create({
   greyText: {
     fontSize: 16,
     color: '#FFF'
+  },
+  errorText: {
+    fontWeight: 400,
+    fontSize: 12,
+    color: '#F0142F',
+    marginTop: -8
   }
 })

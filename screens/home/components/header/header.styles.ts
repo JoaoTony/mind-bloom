@@ -14,6 +14,14 @@ export const homeHeaderSyles = StyleSheet.create({
     alignItems: 'center',
     gap: 12
   },
+  avatarCircle: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#e2e7f3',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   avatar: {
     width: 50,
     height: 50,

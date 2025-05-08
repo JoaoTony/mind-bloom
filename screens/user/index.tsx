@@ -1,18 +1,23 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { userSyles as styles } from "./user.styles"
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Input } from "@/components/input";
 import EditButtons from "./edit-button";
+import { asyncSetToken, useStorageState } from "@/constants/async-storage";
+import { router } from "expo-router";
+import { API } from "@/services/api";
+import { apiEndpoints } from "@/constants/api-endpoints";
 
 const UserSettings: FC = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [saving, setSaving] = useState(false)
 
-  const [name, setName] = useState("Dr Rui Mingas")
-  const [email, setEmail] = useState("ruimingas@gmail.com")
-  const [childName, setChildName] = useState("Rui Mingas JR")
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+
+  const { token: id } = useStorageState(true)
 
   const toggleIsEditing = (editing: boolean) => {
     setIsEditing(editing)
@@ -26,7 +31,30 @@ const UserSettings: FC = () => {
     }, 2000)
   }
 
+  const getUser = async () => {
+    const { data } = await API.get(`${apiEndpoints.me}/${id}`)
+
+    if(data?.id) {
+      setName(data?.name || "")
+      setEmail(data?.email || "")
+    }
+
+    console.log("Data:",data)
+  }
+
+  useEffect(() => {
+    if(id) {
+      getUser()
+    }
+  }, [id])
+
   const inputBG = isEditing ? '#e2e7f3' : '#e2e7f350'
+
+  const signOut = async () => {
+    await asyncSetToken("" as any);
+
+    router.replace("/login")
+  }
 
   return(
     <View style={styles.container}>
@@ -54,24 +82,23 @@ const UserSettings: FC = () => {
             onChangeText={setEmail}
           />
 
-          <Text style={styles.label}>Nome da criança:</Text>
-          <Input
-            value={childName}
-            style={{ backgroundColor: inputBG }}
-            editable={isEditing}
-            onChangeText={setChildName}
-          />
+          <TouchableOpacity
+            onPress={() => signOut()}
+            style={[styles.button]}
+          >
+            <Text style={[styles.edit, { color: "#F0142F" }]}>Terminar sessãso</Text>
+          </TouchableOpacity>
 
         </View>
 
       </View>
 
-      <EditButtons
+      {/* <EditButtons
         isEditing={isEditing}
         toggleIsEditing={toggleIsEditing}
         onSave={onSave}
         saving={saving}
-      />
+      /> */}
     </View>
   )
 }

@@ -3,5 +3,6 @@ export type DoctorCardProps = {
   id: string | number,
   occupation: string,
   avatar: string,
-  star: number
+  star: number,
+  description: string
 }

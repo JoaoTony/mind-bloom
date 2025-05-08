@@ -6,7 +6,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {  router } from "expo-router";
+import {  router, useLocalSearchParams } from "expo-router";
 import { Stars } from "@/components/stars";
 
 const links = {
@@ -27,6 +27,14 @@ const DoctorDetails: FC = () => {
     router.back()
   }
 
+  const {
+    name,
+    avatar,
+    occupation,
+    star,
+    description
+  } = useLocalSearchParams()
+
   return(
     <View
       style={styles.container}
@@ -44,7 +52,7 @@ const DoctorDetails: FC = () => {
 
       <View style={styles.imageWrapper}>
         <Image
-          source={DOCTOR}
+          source={avatar as any}
           style={styles.image}
         />
       </View>
@@ -53,18 +61,18 @@ const DoctorDetails: FC = () => {
         style={styles.content}
       >
         <Text style={styles.name}>
-          Gregor MacGregor
+          {name || ""}
         </Text>
         <Text style={styles.occupation}>
-          Militar e aventureiro (Charlatão)
+          {occupation || ""}
         </Text>
 
-        <Stars stars={4.7}/>
+        <Stars stars={star as any}/>
 
         <View style={styles.tabSeparator} />
 
         <Text style={styles.description}>
-          Gregor MacGregor foi um militar, aventureiro e vigarista escocês. Lutou na Guerra de independência da Venezuela, ficou conhecido como ladrão e impostor, por se declarar "Príncipe de Poyais", um país fictício usado para atrair investidores e até mesmo colonos.
+          {description || ""}
         </Text>
 
         <View style={styles.social}>

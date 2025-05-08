@@ -1,9 +1,10 @@
 import { StyleSheet } from "react-native"
 
-export const doctorCardSyles = StyleSheet.create({
+export const childCardStyles = StyleSheet.create({
   container: {
     width: '100%',
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 12,
     backgroundColor: '#e2e7f3',
     borderRadius: 10,
@@ -11,16 +12,15 @@ export const doctorCardSyles = StyleSheet.create({
     marginTop: 20
   },
   imgWapper: {
-    width: 85,
-    height: 85,
+    width: 70,
+    height: 70,
     borderRadius: 10,
     backgroundColor: '#fff',
     justifyContent: 'flex-end'
   },
   imag: {
-    width: '80%',
-    height: '90%',
-    marginLeft: '10%'
+    width: '90%',
+    height: '90%'
   },
   name: {
     fontSize: 20,
@@ -29,7 +29,7 @@ export const doctorCardSyles = StyleSheet.create({
     marginBottom: 4
   },
   occupation: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#6d6f74',
     marginBottom: 6
   },

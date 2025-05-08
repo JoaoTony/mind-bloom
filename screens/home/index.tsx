@@ -4,79 +4,27 @@ import { homeSyles } from "./home.styles"
 import { HomeHeader } from "./components/header"
 import { HomeSearch } from "./components/serach"
 import { HomeBanner } from "./components/banner"
-import { HomeCategories } from "./components/categories"
+import { Categories } from "../../components/categories"
 import { DoctorCard } from "@/components/doctor-card"
+
+const Doctor = require("@/assets/images/doctor.png")
 
 const doctors = [
   {
     id: 1,
-    name: "Dr. Ana Costa",
+    name: "Dr. João Silva",
     star: 3.8,
-    avatar: "https://example.com/avatars/ana.jpg",
-    occupation: "Cardiologista"
+    avatar: require('@/assets/images/african-american-black-doctor-man-with-stethoscope-isolated-white-background 1.png'),
+    occupation: "Psicólogo Infantil",
+    description: "Especialista no cuidado emocional e comportamental de crianças, com atuação em transtornos como TDAH, TEA, ansiedade e dificuldades escolares. Utiliza abordagens lúdicas para promover o desenvolvimento saudável e fortalecer os vínculos familiares."
   },
   {
     id: 2,
-    name: "Dr. João Silva",
+    name: "Dra. Ana Costa",
     star: 5,
-    avatar: "https://example.com/avatars/joao.jpg",
-    occupation: "Neurologista"
-  },
-  {
-    id: 3,
-    name: "Dr. Beatriz Lima",
-    star: 4.9,
-    avatar: "https://example.com/avatars/beatriz.jpg",
-    occupation: "Pediatra"
-  },
-  {
-    id: 4,
-    name: "Dr. Ricardo Almeida",
-    star: 4.7,
-    avatar: "https://example.com/avatars/ricardo.jpg",
-    occupation: "Cirurgião"
-  },
-  {
-    id: 5,
-    name: "Dr. Sofia Pereira",
-    star: 4.6,
-    avatar: "https://example.com/avatars/sofia.jpg",
-    occupation: "Ginecologista"
-  },
-  {
-    id: 6,
-    name: "Dr. Pedro Fernandes",
-    star: 4.8,
-    avatar: "https://example.com/avatars/pedro.jpg",
-    occupation: "Ortopedista"
-  },
-  {
-    id: 7,
-    name: "Dr. Mariana Santos",
-    star: 4.7,
-    avatar: "https://example.com/avatars/mariana.jpg",
-    occupation: "Dermatologista"
-  },
-  {
-    id: 8,
-    name: "Dr. Felipe Souza",
-    star: 1.9,
-    avatar: "https://example.com/avatars/felipe.jpg",
-    occupation: "Endocrinologista"
-  },
-  {
-    id: 9,
-    name: "Dr. Clara Martins",
-    star: 4.6,
-    avatar: "https://example.com/avatars/clara.jpg",
-    occupation: "Psiquiatra"
-  },
-  {
-    id: 10,
-    name: "Dr. Bruno Oliveira",
-    star: 4.7,
-    avatar: "https://example.com/avatars/bruno.jpg",
-    occupation: "Oftalmologista"
+    avatar: require("@/assets/images/doctor.png"),
+    occupation: "Psicóloga & NeuroLogista",
+    description: "Profissional com atuação integrada em saúde mental e neurologia, especializada no diagnóstico e tratamento de condições que afetam o cérebro e o comportamento. Foco em abordagens clínicas que unem conhecimento psicológico e neurológico para promover o bem-estar dos pacientes."
   }
 ];
 
@@ -88,9 +36,9 @@ const HomeScreen: FC = () => {
         ListHeaderComponent={
           <>
             <HomeHeader/>
-            <HomeSearch/>
+            {/* <HomeSearch/> */}
             <HomeBanner/>
-            <HomeCategories/>
+            <Categories/>
           </>
         }
         contentContainerStyle={{

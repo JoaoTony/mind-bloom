@@ -8,9 +8,18 @@ import { router } from "expo-router";
 
 const DOCTOR = require('@/assets/images/doctor-1.png')
 
-export const DoctorCard: FC<DoctorCardProps> = ({ name, occupation, star}) => {
+export const DoctorCard: FC<DoctorCardProps> = ({ name, avatar, occupation, description, star}) => {
   const goToDetails = () => {
-    router.push('/doctor-details');
+    router.push({
+      pathname: '/doctor-details',
+      params: {
+        name,
+        avatar,
+        occupation,
+        star,
+        description
+      }
+    });
   }
 
   return(
@@ -20,7 +29,7 @@ export const DoctorCard: FC<DoctorCardProps> = ({ name, occupation, star}) => {
     >
       <View style={styles.imgWapper}>
         <Image
-          source={DOCTOR}
+          source={avatar as any}
           style={styles.imag}
         />
       </View>
