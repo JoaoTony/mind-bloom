@@ -61,7 +61,7 @@ const ChildrenScreen: FC = () => {
   );
 
   return(
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{   flex: 1 }}>
       <View style={styles.container}>
 
         <View style={styles.header}>

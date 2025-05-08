@@ -51,7 +51,7 @@ const TestScreen: FC = () => {
   );
 
   return(
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
         style={styles.container}
         refreshControl={
