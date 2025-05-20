@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { Redirect, Tabs } from 'expo-router';
 import {AntDesign, Octicons, MaterialCommunityIcons} from "@expo/vector-icons"
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
@@ -7,6 +7,7 @@ import { useSession } from "@/context/auth-contex";
 import { View } from "react-native";
 import { USER_ACCESS_TOKEN } from "@/constants";
 import { useStorageState } from "@/constants/async-storage";
+import CustomBottomTab from "@/components/custom-bottom-tab";
 
 export default function TabLayout() {
    useEffect(() => {
@@ -28,9 +29,14 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#2E4A66'
+        tabBarActiveTintColor: '#2E4A66',
       }}
+      // tabBar={}
       // backBehavior="history"
+      tabBar={props => (
+        <CustomBottomTab {...props} />
+      )}
+
     >
       <Tabs.Screen
         name="index"
