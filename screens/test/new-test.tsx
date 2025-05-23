@@ -10,6 +10,8 @@ import { testData } from "./data";
 import { CustomModal } from "@/components/modal";
 import { ConfirmModal } from "./confirm-modal";
 import { useStorageState } from "@/constants/async-storage";
+import { useLoop } from "@/hooks/useLoop";
+import Animated, { Easing, useAnimatedStyle, useDerivedValue, useSharedValue, withRepeat, withSpring, withTiming } from "react-native-reanimated";
 
 const TEA = require('@/assets/images/tea.png')
 const TDAH = require('@/assets/images/tdah.png')
@@ -88,6 +90,50 @@ const NewTest: FC = () => {
     }, [])
   );
 
+  const bpm = 44
+  const duration = (60 * 1000) / bpm
+
+  // const progress = useLoop({
+  //   duration:  duration / 2
+  // })
+
+  // const transform = useDerivedValue(() => {
+  //   return [{ scale: mix(progress.value, 1, 1.1) }]
+  // })
+
+  const scale = useSharedValue(1)
+
+    useEffect(() => {
+    scale.value = withRepeat(
+      withTiming(1.1, {
+        duration: 1000,
+        easing: Easing.inOut(Easing.ease),
+      }),
+      -1, // -1 = infinito
+      true // reverse = sim
+    )
+  }, [])
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }]
+  }))
+
+    const translateY = useSharedValue(50)
+
+
+    useEffect(() => {
+      translateY.value = withSpring(0, {
+        damping: 10,
+        stiffness: 150,
+      })
+    }, [])
+
+    const animatedStyleBounce = useAnimatedStyle(() => {
+      return {
+        transform: [{ translateY: translateY.value }],
+      }
+    })
+
   return(
     <View style={styles.newTestContainer}>
      <View style={styles.newTextHeader}>
@@ -107,11 +153,11 @@ const NewTest: FC = () => {
 
       <View style={styles.contentWrapper}>
 
-        <Image
-          style={styles.illustration}
+        <Animated.Image
+          style={[styles.illustration, animatedStyle]}
           source={testType === 'TEA' ? TEA : TDAH}
         />
-        <View style={styles.content}>
+        <Animated.View style={[styles.content, animatedStyleBounce]}>
           <Text style={styles.quation}>
             {selected.text}
           </Text>
@@ -137,7 +183,7 @@ const NewTest: FC = () => {
             </View>
 
           </View>
-        </View>
+        </Animated.View>
       </View>
 
       <CustomModal

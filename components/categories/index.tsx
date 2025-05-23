@@ -28,7 +28,7 @@ export const Categories: FC<{ selected?: string, onSelect?: (type: Type) => void
         <TouchableOpacity style={[styles.card, border("TEA")]} onPress={() => learnMore('TEA')}>
           <Text style={styles.text}>TEA</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.card, border("TDAH"), { backgroundColor: '#a5b7ec' }]} onPress={() => learnMore('TDAH')}>
+        <TouchableOpacity style={[styles.card, border("TDAH"), { backgroundColor: '#3b4bc0' }]} onPress={() => learnMore('TDAH')}>
           <Text style={styles.text}>TDAH</Text>
         </TouchableOpacity>
       </View>

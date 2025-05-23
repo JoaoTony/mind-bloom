@@ -1,3 +1,4 @@
+import { defualtTheme } from "@/styles/theme"
 import { StyleSheet } from "react-native"
 
 export const childCardStyles = StyleSheet.create({
@@ -8,8 +9,9 @@ export const childCardStyles = StyleSheet.create({
     gap: 12,
     backgroundColor: '#e2e7f3',
     borderRadius: 10,
-    padding: 12,
-    marginTop: 20
+    marginTop: 20,
+    justifyContent: 'space-between',
+    overflow: 'hidden'
   },
   imgWapper: {
     width: 70,
@@ -33,4 +35,27 @@ export const childCardStyles = StyleSheet.create({
     color: '#6d6f74',
     marginBottom: 6
   },
+  row: {
+    flexDirection: 'row',
+    gap: 10,
+    padding: 12,
+  },
+  values: {
+    width: 100,
+    height: 30,
+    flexDirection: 'row',
+    borderRadius: 15,
+    overflow: 'hidden',
+    marginRight: 12,
+  },
+  value: {
+    flex: 2,
+    backgroundColor:`${defualtTheme.colors.green.dark}`,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  valueTexrt: {
+    color: "#fff"
+  }
+
 })

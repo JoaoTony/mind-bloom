@@ -58,11 +58,13 @@ const UserSettings: FC = () => {
 
   return(
     <View style={styles.container}>
-      <View style={styles.content}>
         <View style={styles.avatarWrapper}>
+        <View style={styles.avatarWrapperWrapper}>
           <AntDesign name="user" size={24} color="black" />
         </View>
 
+        </View>
+      <View style={styles.content}>
 
         <View style={styles.texts}>
 
@@ -93,12 +95,12 @@ const UserSettings: FC = () => {
 
       </View>
 
-      {/* <EditButtons
+      <EditButtons
         isEditing={isEditing}
         toggleIsEditing={toggleIsEditing}
         onSave={onSave}
         saving={saving}
-      /> */}
+      />
     </View>
   )
 }

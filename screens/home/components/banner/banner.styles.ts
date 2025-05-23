@@ -5,9 +5,9 @@ export const homeBannerSyles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: 188,
+    height: 200,
     borderRadius: 10,
-    backgroundColor: '#2E4A66',
+    // backgroundColor: '#3b4bc0',
     marginTop: 40,
     position: 'relative',
   },
@@ -15,13 +15,16 @@ export const homeBannerSyles = StyleSheet.create({
     color: '#fff',
     width: '60%',
     fontSize: 16,
-    padding: 12
+    padding: 12,
+    alignSelf: 'center',
+    marginLeft: 20
   },
   image: {
     width: '30%',
     height: '120%',
-    marginTop: '-10%',
+    //marginTop: '10%',
     borderRadius: 10,
+    zIndex: 3,
   }
 
 })

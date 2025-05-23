@@ -21,7 +21,7 @@ export const homeCategoriesStyles = StyleSheet.create({
     width: width / 2 - 16 - 10,
     height: width / 2 - 32 - 10,
     borderRadius: 10,
-    backgroundColor: '#bca5ec',
+    backgroundColor: '#613bc0',
     alignItems: 'center',
     justifyContent: 'center'
   },

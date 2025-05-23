@@ -6,21 +6,43 @@ export const userSyles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
+    paddingBottom: 100
   },
   content: {
     width: '100%',
     flex: 1,
     padding: 16,
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: 50
   },
   avatarWrapper: {
+    width: '100%',
+    height: 300,
+    //borderRadius: 50,
+    backgroundColor: '#c4d3ff',
+    justifyContent: 'flex-end'
+
+  },
+  avatarWrapperWrapper: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#e2e7f3',
-    marginTop: 100,
+    backgroundColor: '#fff',
+    marginBottom: -50,
+    marginLeft: 20,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    padding: 20,
+
+    // iOS shadow
+    shadowColor: '#00000070',
+    shadowOffset: { width: -2, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+
+    // Android shadow
+    elevation: 5,
+
   },
   texts: {
     width: '100%',

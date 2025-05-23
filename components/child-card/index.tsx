@@ -12,13 +12,15 @@ type Props = {
   name: string,
   adhdDiagnosisPercentage: number,
   asdDiagnosisPercertage:  number,
+  gender: string,
   avatar: string
   disabled?: boolean,
   testType: 'TEA' | 'TDAH'
-  onPress?: (id: string) => void
+  onPress?: (id: string) => void,
+  dateOfBirth: string
 }
 
-export const ChildCard: FC<Props> = ({ name, asdDiagnosisPercertage, adhdDiagnosisPercentage, avatar, disabled, id, testType, onPress}) => {
+export const ChildCard: FC<Props> = ({ name, asdDiagnosisPercertage, adhdDiagnosisPercentage, avatar, disabled, id, testType, gender, onPress, dateOfBirth}) => {
   const goToDetails = () => {
     if(onPress && typeof onPress === "function") {
       onPress?.(id as any)
@@ -40,18 +42,32 @@ export const ChildCard: FC<Props> = ({ name, asdDiagnosisPercertage, adhdDiagnos
       onPress={goToDetails}
       disabled={disabled}
     >
+      <View style={styles.row}>
+
       <View style={styles.imgWapper}>
         <Image
           source={avatar}
           style={styles.imag}
-        />
+          />
       </View>
-
       <View>
         <Text style={styles.name}>{name}</Text>
-        <Text  style={styles.occupation}>TDAH: {adhdDiagnosisPercentage || 0}%</Text>
-        <Text  style={styles.occupation}>TEA: {asdDiagnosisPercertage || 0}%</Text>
+        <Text  style={styles.occupation}>{gender === "female" ? "Feminino" : "Masculino"}</Text>
+        <Text  style={styles.occupation}>{dateOfBirth}</Text>
       </View>
+      </View>
+
+      <View style={styles.values}>
+        <View style={styles.value}>
+          <Text style={styles.valueTexrt}>{adhdDiagnosisPercentage || 0}%</Text>
+        </View>
+        <View style={[styles.value,  { backgroundColor: '#613bc0' }]}>
+          <Text style={styles.valueTexrt}>
+            {asdDiagnosisPercertage || 0}%
+          </Text>
+        </View>
+      </View>
+
     </TouchableOpacity>
   )
 }

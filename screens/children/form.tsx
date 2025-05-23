@@ -25,6 +25,7 @@ export const ChindrenModalForm: FC<ChindrenModalFormProps> = ({ onClose, data, o
     let objectToUpdate = {
       name,
       dateofBirth,
+      gender: "male"
     } as any
 
     if(!edit) {
@@ -44,6 +45,8 @@ export const ChindrenModalForm: FC<ChindrenModalFormProps> = ({ onClose, data, o
       onOK?.()
     }
   }
+
+  console.log("Data: ", data, data?.id, data?.adhdDiagnosisPercentage)
 
   return(
     <View style={{ width: '100%', gap: 10, marginTop: 20 }}>
@@ -69,11 +72,11 @@ export const ChindrenModalForm: FC<ChindrenModalFormProps> = ({ onClose, data, o
 
       {data?.id && (
         <View>
-          <Text style={styles.label}>Diagnóstico de TDAH em percentagem()</Text>
+          <Text style={styles.label}>Diagnóstico de TDAH em percentagem</Text>
           <Input
-            placeholder="Diagnóstico da criança"
+            placeholder={"Diagnóstico da criança"}
             style={[styles.inputStyle, { opacity: 0.7 }]}
-            defaultValue={data?.adhdDiagnosisPercentage || "0"}
+            value={data?.adhdDiagnosisPercentage?.toString() || "0"}
             editable={false}
           />
         </View>
@@ -84,7 +87,7 @@ export const ChindrenModalForm: FC<ChindrenModalFormProps> = ({ onClose, data, o
           <Input
             placeholder="Diagnóstico da criança"
             style={[styles.inputStyle, { opacity: 0.7 }]}
-            defaultValue={data?.asdDiagnosisPercertage || "0"}
+            defaultValue={data?.asdDiagnosisPercertage?.toString() || "0"}
             editable={false}
           />
         </View>
@@ -99,7 +102,7 @@ export const ChindrenModalForm: FC<ChindrenModalFormProps> = ({ onClose, data, o
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.button, { backgroundColor: '#144467' }]}
+          style={[styles.button, { backgroundColor: '#3b4bc0' }]}
           onPress={() => addKid(data?.id)}
         >
            {loading ? (

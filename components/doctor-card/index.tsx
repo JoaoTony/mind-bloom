@@ -5,6 +5,7 @@ import { Image, View, Text, TouchableOpacity } from "react-native";
 import { Stars } from "../stars";
 import { DoctorCardProps } from "./doctor-card.types";
 import { router } from "expo-router";
+import Animated from "react-native-reanimated";
 
 const DOCTOR = require('@/assets/images/doctor-1.png')
 
@@ -28,7 +29,8 @@ export const DoctorCard: FC<DoctorCardProps> = ({ name, avatar, occupation, desc
       onPress={goToDetails}
     >
       <View style={styles.imgWapper}>
-        <Image
+        <Animated.Image
+          sharedTransitionTag="sharedTag"
           source={avatar as any}
           style={styles.imag}
         />

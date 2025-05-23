@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import * as Linking from 'expo-linking';
 
 import { doctorDetailsSyles as styles} from "./doctor-details.styles"
@@ -8,6 +8,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {  router, useLocalSearchParams } from "expo-router";
 import { Stars } from "@/components/stars";
+import Animated, { FadeIn, FadeInDown, FadeInLeft, FadeInRight, BounceInDown, useAnimatedStyle, withSpring, useSharedValue} from "react-native-reanimated";
 
 const links = {
   linkedin: 'https://www.linkedin.com',
@@ -35,6 +36,21 @@ const DoctorDetails: FC = () => {
     description
   } = useLocalSearchParams()
 
+  const translateY = useSharedValue(50)
+
+  useEffect(() => {
+    translateY.value = withSpring(0, {
+      damping: 10,
+      stiffness: 150,
+    })
+  }, [])
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    }
+  })
+
   return(
     <View
       style={styles.container}
@@ -51,38 +67,61 @@ const DoctorDetails: FC = () => {
       </View>
 
       <View style={styles.imageWrapper}>
-        <Image
+        <Animated.Image
+          //sharedTransitionTag="sharedTag"
+          //sharedTransitionStyle={{ }}
           source={avatar as any}
           style={styles.image}
+          entering={FadeInRight.duration(400).delay(200)}
         />
       </View>
 
-      <View
-        style={styles.content}
+      <Animated.View
+        //style={styles.content}
+        style={[styles.content, animatedStyle]}
+        entering={BounceInDown.duration(400).delay(100)}
       >
-        <Text style={styles.name}>
+        <Animated.Text
+          entering={FadeInLeft.duration(1000).delay(200)}
+          style={styles.name}
+        >
           {name || ""}
-        </Text>
-        <Text style={styles.occupation}>
-          {occupation || ""}
-        </Text>
+        </Animated.Text>
+        <Animated.Text
+          style={styles.occupation}
+          entering={FadeInLeft.duration(400).delay(300)}
+        >
 
-        <Stars stars={star as any}/>
+          {occupation || ""}
+        </Animated.Text>
+
+        <Animated.View
+          entering={FadeInLeft.duration(400).delay(400)}
+        >
+
+          <Stars stars={star as any}/>
+        </Animated.View>
 
         <View style={styles.tabSeparator} />
 
-        <Text style={styles.description}>
+        <Animated.Text
+          style={styles.description}
+          entering={FadeInLeft.duration(400).delay(500)}
+        >
           {description || ""}
-        </Text>
+        </Animated.Text>
 
-        <View style={styles.social}>
+        <Animated.View
+          style={styles.social}
+          entering={FadeInDown.duration(400).delay(600)}
+        >
         <AntDesign name="instagram" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(links.instagram)}/>
         <AntDesign name="linkedin-square" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(links.linkedin)}/>
         <AntDesign name="twitter" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(links.twitter)}/>
         <FontAwesome name="whatsapp" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(links.whatsapp)}/>
-        </View>
+        </Animated.View>
 
-      </View>
+      </Animated.View>
     </View>
   )
 }

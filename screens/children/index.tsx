@@ -1,9 +1,11 @@
 import { FC, useCallback, useEffect, useState } from "react";
 
 import AntDesign from '@expo/vector-icons/AntDesign';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Fab } from '@masumdev/rn-fab';
 
 import { childrenStyles as styles } from "./children.styles"
-import { ActivityIndicator, RefreshControl, SafeAreaView, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, SafeAreaView, ScrollView, Text, TouchableOpacity, View, ViewToken } from "react-native";
 import { ChildCard } from "@/components/child-card";
 import { CustomModal } from "@/components/modal";
 import { ChindrenModalForm } from "./form";
@@ -11,6 +13,8 @@ import { API } from "@/services/api";
 import { apiEndpoints } from "@/constants/api-endpoints";
 import { useStorageState } from "@/constants/async-storage";
 import { useFocusEffect } from "expo-router";
+import { useSharedValue } from "react-native-reanimated";
+import { CustimChildCard } from "./custom-card";
 
 
 const ChildrenScreen: FC = () => {
@@ -19,6 +23,7 @@ const ChildrenScreen: FC = () => {
   const [kids, setkids] = useState([])
   const [refreshing, setRefreshing] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [selectedGender, setSelectedGender] = useState("")
 
   const { token: id } = useStorageState(true)
 
@@ -31,6 +36,8 @@ const ChildrenScreen: FC = () => {
 
   const getKids = async (onLoading?: (isLoading: boolean) => void) => {
     const { data, statusCode } = await API.get(apiEndpoints.kids?.replace("{parent_id}", id || ""), {}, onLoading)
+
+    console.log("KIF:", data)
 
     if(data?.data) {
       setkids(data.data)
@@ -48,9 +55,9 @@ const ChildrenScreen: FC = () => {
     getKids()
   }
 
-    const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(() => {
     getKids(setRefreshing)
-  }, []);
+  }, [refreshing]);
 
   useFocusEffect(
     useCallback(() => {
@@ -60,20 +67,18 @@ const ChildrenScreen: FC = () => {
     }, [id])
   );
 
+  const onModalOpen = (gender: "male" | "female") => {
+    setSelectedGender(gender)
+    toggleModal(true)
+  }
+
+  const viewableItems = useSharedValue<ViewToken[]>([])
+
   return(
     <SafeAreaView style={{   flex: 1 }}>
-      <View style={styles.container}>
+      <>
 
-        <View style={styles.header}>
-          <Text style={styles.title}>Crianças</Text>
 
-          <AntDesign
-            name="addusergroup"
-            size={24}
-            color="#4b4f59"
-            onPress={() => toggleModal(true)}
-          />
-        </View>
 
         {loading && (
           <View style={{
@@ -86,13 +91,13 @@ const ChildrenScreen: FC = () => {
           </View>
         )}
 
-        <ScrollView
+        {/* <ScrollView
           style={{ flex: 1 }}
            refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          {kids.map((item: any) => (
+          {!loading && kids.map((item: any) => (
             <ChildCard
               {...item}
               key={item.id}
@@ -104,8 +109,65 @@ const ChildrenScreen: FC = () => {
               }}
             />
           ))}
-        </ScrollView>
+        </ScrollView> */}
 
+        <FlatList
+          data={kids || []}
+          style={styles.container}
+          ListHeaderComponent={(
+            <>
+            <View style={styles.header}>
+              <Text style={styles.title}>Crianças</Text>
+            </View>
+            </>
+          )}
+          keyExtractor={item => (item as any).id}
+          renderItem={item => (
+            // <ChildCard
+            //   {...(item as any).item}
+            //   testType={"" as any}
+            //   disabled={false}
+            //   onPress={id => {
+            //     setSelectedChild(item)
+            //     toggleModal(true)
+            //   }}
+            // />
+            <CustimChildCard
+              data={item.item}
+              onPress={() => {
+                setSelectedChild(item)
+                toggleModal(true)
+              }}
+              viewableItems={viewableItems}
+            />
+          )}
+          onViewableItemsChanged={({ viewableItems: items }) => {
+            viewableItems.value = items
+          }}
+        />
+
+      </>
+
+      <View
+        style={styles.floating}
+      >
+        <Fab
+          variant="clustered"
+          // style={{ backgroundColor: "#3b4bc0", borderRadius: 30 }}
+          items={[
+            {
+              icon: <FontAwesome name="female" size={24} color="white" />,
+              label: "Feminino",
+              onPress: () => onModalOpen("female")
+            },
+            {
+              icon: <FontAwesome name="male" size={24} color="white" />,
+              label: "Masculino",
+              onPress: () => onModalOpen("male")
+            }
+          ]}
+          theme="light"
+        />
       </View>
 
       <CustomModal

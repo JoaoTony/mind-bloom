@@ -67,7 +67,7 @@ export const testStyles = StyleSheet.create({
     paddingHorizontal: 16
   },
   sectionTitle: {
-    color: "#144467",
+    color: "#3b4bc0",
     fontSize: 24,
     fontWeight: 900,
     marginBottom: 8
@@ -81,7 +81,7 @@ export const testStyles = StyleSheet.create({
   name: {
     fontSize: 24,
     fontWeight: 900,
-    color: '#2E4A66',
+    color: '#3b4bc0',
     marginBottom: 8
   },
   occupation: {
@@ -115,7 +115,7 @@ export const testStyles = StyleSheet.create({
     paddingBottom: 30
   },
   butttonNext: {
-    backgroundColor: '#2E4A66',
+    backgroundColor: '#3b4bc0',
     padding: 12,
     borderRadius: 8
   },
@@ -143,7 +143,7 @@ export const testStyles = StyleSheet.create({
   },
   buttonPrevText: {
     fontSize: 16,
-    color: '#2E4A66',
+    color: '#3b4bc0',
     fontWeight: 700
   },
   quation: {
@@ -157,7 +157,8 @@ export const testStyles = StyleSheet.create({
     height:  width * 0.6,
     maxWidth: width * 0.6,
     alignSelf: 'center',
-    marginVertical: 20
+    marginVertical: 20,
+    marginBottom: 40
   },
   buttons: {
     width: '100%',
@@ -175,6 +176,6 @@ export const testStyles = StyleSheet.create({
   buttonText: {
     fontSize: 14,
     fontWeight: 700,
-    color: "#144467"
+    color: "#3b4bc0"
   },
 })

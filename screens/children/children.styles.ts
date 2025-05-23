@@ -6,7 +6,8 @@ export const childrenStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    paddingBottom: 0
+    paddingBottom: 0,
+    position: 'relative',
   },
   header: {
     width: '100%',
@@ -42,11 +43,22 @@ export const childrenStyles = StyleSheet.create({
   buttonText: {
     fontSize: 14,
     fontWeight: 700,
-    color: "#144467"
+    color: "#3b4bc0"
   },
   label: {
     color: "#4b4f59",
     fontSize: 14,
     marginBottom: 6
+  },
+  floating: {
+    position: 'absolute',
+    bottom: 80,
+    right: -11,
+    // width: 50,
+    // height:  50,
+
+    backgroundColor: '#3b4bc0',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })

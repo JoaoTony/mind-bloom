@@ -1,7 +1,7 @@
 export const colors = {
   green: {
     200: '#334139',
-    dark: '#29BA66',
+    dark: '#3b4bc0',
     default: '#73EEA6',
     light: '#E2FFF0'
   },

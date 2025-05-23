@@ -45,7 +45,7 @@ export const learnMoreStyles = StyleSheet.create({
   whatIs: {
     fontSize: 32,
     fontWeight: 900,
-    color: '#2E4A66',
+    color: '#3b4bc0',
     marginBottom: 8
   },
   whatIsHighlighted: {
@@ -74,7 +74,7 @@ export const learnMoreStyles = StyleSheet.create({
     paddingBottom: 30
   },
   butttonNext: {
-    backgroundColor: '#2E4A66',
+    backgroundColor: '#3b4bc0',
     padding: 12,
     borderRadius: 8
   },
@@ -90,7 +90,7 @@ export const learnMoreStyles = StyleSheet.create({
   },
   buttonPrevText: {
     fontSize: 16,
-    color: '#2E4A66',
+    color: '#3b4bc0',
     fontWeight: 700
   }
 })

@@ -54,6 +54,7 @@ const TestScreen: FC = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
         style={styles.container}
+        contentContainerStyle={{ paddingBottom: 100 }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
