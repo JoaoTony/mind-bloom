@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { USER_ACCESS_TOKEN, USER_ID } from ".";
+import { USER_ACCESS_TOKEN, USER_ID, USER_ROLE } from ".";
 import { useEffect, useState } from "react";
 
 export const storeData = async (value: string, key: string) => {
@@ -21,6 +21,10 @@ export const getData = async () => {
   }
 };
 
+export const asyncSetUserRole = async (userRole: string) => {
+   await storeData(userRole, USER_ROLE)
+}
+
 
 export const asyncSetToken = async (token: string) => {
   await storeData(token, USER_ACCESS_TOKEN)
@@ -29,6 +33,12 @@ export const asyncSetToken = async (token: string) => {
 
 export const asyncSetUserID= async (id: string) => {
   await storeData(id, USER_ID)
+}
+
+export const asyncRemoveAll = async () => {
+  asyncSetToken("")
+  asyncSetUserID("")
+  asyncSetUserRole("")
 }
 
 export function useStorageState(userID?: boolean) {
@@ -48,4 +58,23 @@ export function useStorageState(userID?: boolean) {
   }, []);
 
   return { token: state, loading };
+}
+
+export function useRole(userID?: boolean) {
+  const [state, setState] = useState<string>();
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+   (async () => {
+    setLoading(true)
+    const value = await AsyncStorage.getItem(USER_ROLE);
+    if (value !== null) {
+      setState(value)
+      // value previously stored
+    }
+    setLoading(false)
+   })()
+  }, []);
+
+  return { role: state, loading };
 }

@@ -11,7 +11,7 @@ import {
 import { type BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { useWindowDimensions, StyleSheet, Pressable } from 'react-native'
 import { useTheme } from 'styled-components/native'
-import CustomBottomTabIcon, { menuList } from './botton-tab-icons'
+import CustomBottomTabIcon, { menuList, menuListForDoctor } from './botton-tab-icons'
 import { defualtTheme } from '@/styles/theme'
 import { useNavigation } from 'expo-router'
 
@@ -29,21 +29,17 @@ const INITIAL_POSITION = {
   y: 10
 }
 
-const CustomBottomTab: FC<{ onChangeActive: (index: number) => void }> = ({ onChangeActive }) => {
+const CustomBottomTab: FC<{ role: string, onChangeActive: (index: number) => void }> = ({ onChangeActive , role}) => {
   const { width } = useWindowDimensions()
  // const theme = useTheme()
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [position, setPosition] = useState<ElementPosition>(INITIAL_POSITION)
 
-  // useEffect(() => {
-  //   onChangeActive(0)
-  // }, [])
-
   const router = useRouter()
 
   const navigation = useNavigation()
 
-  const MARGIN = 20 || defualtTheme.spacing.padding.default
+  const MARGIN = 20
   const TAB_BAR_WIDTH = width - MARGIN * 2
 
   const tranalateAnimation = useAnimatedStyle(() => {
@@ -51,6 +47,8 @@ const CustomBottomTab: FC<{ onChangeActive: (index: number) => void }> = ({ onCh
       transform: [{ translateX: withSpring(position.x) }]
     }
   })
+
+  const list = role === "Parent" ? menuList : menuListForDoctor
 
   return (
     <Container
@@ -71,7 +69,7 @@ const CustomBottomTab: FC<{ onChangeActive: (index: number) => void }> = ({ onCh
 
         </TabBarContentContainerBg>
       </Animated.View>
-      {menuList.map((route, index) => {
+      {list.map((route, index) => {
         // const { options } = descriptors[route.key]
 
         // const label =

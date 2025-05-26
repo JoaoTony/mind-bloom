@@ -9,11 +9,12 @@ import Animated from "react-native-reanimated";
 
 const DOCTOR = require('@/assets/images/doctor-1.png')
 
-export const DoctorCard: FC<DoctorCardProps> = ({ name, avatar, occupation, description, star}) => {
+export const DoctorCard: FC<DoctorCardProps> = ({ name, avatar, occupation, description, id, star}) => {
   const goToDetails = () => {
     router.push({
       pathname: '/doctor-details',
       params: {
+        id,
         name,
         avatar,
         occupation,
@@ -31,7 +32,7 @@ export const DoctorCard: FC<DoctorCardProps> = ({ name, avatar, occupation, desc
       <View style={styles.imgWapper}>
         <Animated.Image
           sharedTransitionTag="sharedTag"
-          source={avatar as any}
+          source={{ uri: avatar as any }}
           style={styles.imag}
         />
       </View>

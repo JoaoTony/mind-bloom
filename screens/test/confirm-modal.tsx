@@ -5,6 +5,7 @@ import { testStyles as styles } from "./test.styles"
 import { router } from "expo-router";
 import { apiEndpoints } from "@/constants/api-endpoints";
 import { API } from "@/services/api";
+import { defualtTheme } from "@/styles/theme";
 
 type ConfirmModalProps = {
   onClose: () => void,
@@ -76,7 +77,7 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({ onClose, childName, percen
         Desja salvar o diagnóstico da criança?
       </Text>
 
-      <Text
+      {/* <Text
         style={{
           color: "#717F7F",
           fontSize: 16,
@@ -92,7 +93,7 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({ onClose, childName, percen
         >
           <Text style={{ color: "#144467", fontWeight: 700, marginBottom: -4 }}>Aqui</Text>
         </TouchableOpacity>
-      </Text>
+      </Text> */}
 
       <View style={styles.buttons}>
         <TouchableOpacity
@@ -103,7 +104,7 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({ onClose, childName, percen
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.button, { backgroundColor: '#144467' }]}
+          style={[styles.button, { backgroundColor: defualtTheme.colors.green.dark }]}
           onPress={onOK}
         >
           {loading ? <ActivityIndicator size="small" color={"#fff"}/> :

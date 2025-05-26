@@ -1,7 +1,7 @@
 import { type FC } from 'react'
 import { View } from 'react-native'
 
-import {AntDesign, Octicons, MaterialCommunityIcons} from "@expo/vector-icons"
+import {AntDesign, Octicons, MaterialCommunityIcons, Ionicons} from "@expo/vector-icons"
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 import { defualtTheme } from '@/styles/theme'
@@ -22,6 +22,12 @@ export const menuList = [
   { name: 'user', label: 'Perfil' }
 ]
 
+export const menuListForDoctor = [
+  { name: 'chat-list', label: 'Chats' },
+  { name: 'children', label: 'Crianças' },
+  { name: 'user', label: 'Perfil' }
+]
+
 const width = 20
 const height = 20
 
@@ -29,16 +35,14 @@ const renderIcon = (route: string, isFocused: boolean) => {
   switch (route) {
     case 'index':
       return   <MaterialCommunityIcons name={isFocused ? 'home' : 'home-outline'} color={isFocused ? selectedColor : '#fff'}  size={24} />
-      //return isFocused ? <HomeIconSelected width={width} height={height}/> : <HomeIcon width={width} height={height}/>
     case 'exam':
       return  <MaterialCommunityIcons name={isFocused ? 'file-document-edit' : 'file-document-edit-outline'} color={isFocused ? selectedColor : '#fff'} size={24} />
-      //return <MarketplaceIcon width={width} height={height} fill={isFocused ? selectedColor : 'transparent'}/>
     case 'children':
       return <FontAwesome6 name="children"  color={isFocused ? selectedColor : '#fff'}  size={24} />
-     // return isFocused ? <FavouritesIconSelected width={width} height={height}/> : <FavouritesIcon width={width} height={height}/>
+    case 'chat-list':
+      return <Ionicons name={isFocused ? "chatbubble" : "chatbubble-outline"}  color={isFocused ? selectedColor : '#fff'}  size={20} style={{ marginRight: 3 }} />
     case 'user':
       return  <Octicons name={isFocused ? 'person-fill' : 'person'} color={isFocused ? selectedColor : '#fff'} size={24} />
-      //return <ProfileIcon width={width} height={height} fill={isFocused ? selectedColor : 'transparent'}/>
     default :
       break
   }

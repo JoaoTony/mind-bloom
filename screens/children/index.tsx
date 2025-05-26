@@ -1,20 +1,21 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Fab } from '@masumdev/rn-fab';
 
 import { childrenStyles as styles } from "./children.styles"
-import { ActivityIndicator, FlatList, RefreshControl, SafeAreaView, ScrollView, Text, TouchableOpacity, View, ViewToken } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, SafeAreaView, ScrollView, Text, TouchableOpacity, View, ViewToken, Animated } from "react-native";
 import { ChildCard } from "@/components/child-card";
 import { CustomModal } from "@/components/modal";
 import { ChindrenModalForm } from "./form";
 import { API } from "@/services/api";
 import { apiEndpoints } from "@/constants/api-endpoints";
-import { useStorageState } from "@/constants/async-storage";
+import { useRole, useStorageState } from "@/constants/async-storage";
 import { useFocusEffect } from "expo-router";
-import { useSharedValue } from "react-native-reanimated";
+//import Animated, { useSharedValue } from "react-native-reanimated";
 import { CustimChildCard } from "./custom-card";
+import { Empty } from "@/components/empty";
 
 
 const ChildrenScreen: FC = () => {
@@ -27,17 +28,20 @@ const ChildrenScreen: FC = () => {
 
   const { token: id } = useStorageState(true)
 
+  const { loading: loadingRole, role } = useRole()
+
   const toggleModal = (isOpen: boolean) => {
     if(!isOpen) {
       setSelectedChild({})
+      setSelectedGender("")
     }
     setShowModal(isOpen)
   }
 
-  const getKids = async (onLoading?: (isLoading: boolean) => void) => {
-    const { data, statusCode } = await API.get(apiEndpoints.kids?.replace("{parent_id}", id || ""), {}, onLoading)
+  console.log("id:", id)
 
-    console.log("KIF:", data)
+  const getKids = async (onLoading?: (isLoading: boolean) => void) => {
+    const { data, statusCode } = await API.get(`${apiEndpoints.kids?.replace("{parent_id}", id || "")}${role === "Psychologist" ? '?all=true': ''}`, {}, onLoading)
 
     if(data?.data) {
       setkids(data.data)
@@ -72,48 +76,25 @@ const ChildrenScreen: FC = () => {
     toggleModal(true)
   }
 
-  const viewableItems = useSharedValue<ViewToken[]>([])
+  const viewableItems: any = []
+
+  const scrollY = useRef(new Animated.Value(0)).current
+
+  const SPACING = 20
+  const ITEM_SIZE = 100 + 40
+
+  console.log("KIDS:", JSON.stringify(kids, null, -2))
 
   return(
     <SafeAreaView style={{   flex: 1 }}>
       <>
 
-
-
-        {loading && (
-          <View style={{
-            flex: 1,
-            marginTop: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-            <ActivityIndicator size="small" color="#144467"/>
-          </View>
-        )}
-
-        {/* <ScrollView
-          style={{ flex: 1 }}
+        <Animated.FlatList
+          data={kids || []}
+          style={styles.container}
            refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-        >
-          {!loading && kids.map((item: any) => (
-            <ChildCard
-              {...item}
-              key={item.id}
-              testType={"" as any}
-              disabled={false}
-              onPress={id => {
-                setSelectedChild(item)
-                toggleModal(true)
-              }}
-            />
-          ))}
-        </ScrollView> */}
-
-        <FlatList
-          data={kids || []}
-          style={styles.container}
           ListHeaderComponent={(
             <>
             <View style={styles.header}>
@@ -121,35 +102,78 @@ const ChildrenScreen: FC = () => {
             </View>
             </>
           )}
-          keyExtractor={item => (item as any).id}
-          renderItem={item => (
-            // <ChildCard
-            //   {...(item as any).item}
-            //   testType={"" as any}
-            //   disabled={false}
-            //   onPress={id => {
-            //     setSelectedChild(item)
-            //     toggleModal(true)
-            //   }}
-            // />
-            <CustimChildCard
-              data={item.item}
-              onPress={() => {
-                setSelectedChild(item)
-                toggleModal(true)
-              }}
-              viewableItems={viewableItems}
-            />
+          ListEmptyComponent={(
+            <>
+              {loading && (
+                <View style={{
+                  flex: 1,
+                  marginTop: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                  <ActivityIndicator size="small" color="#144467"/>
+                </View>
+              )}
+              {!loading && !kids.length && (
+               <Empty/>
+              )}
+            </>
           )}
-          onViewableItemsChanged={({ viewableItems: items }) => {
-            viewableItems.value = items
-          }}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          keyExtractor={item => (item as any).id}
+          renderItem={({ index, item }) => {
+            const inputRange = [
+              -1,
+              0,
+              ITEM_SIZE * index,
+              ITEM_SIZE * (index + 2)
+            ]
+
+             const opacityInputRange = [
+              -1,
+              0,
+              ITEM_SIZE * index,
+              ITEM_SIZE * (index + 1)
+            ]
+
+            const scale = scrollY.interpolate({
+              inputRange,
+              outputRange: [
+                1, 1, 1, 0
+              ]
+            })
+
+             const opacity = scrollY.interpolate({
+              inputRange: opacityInputRange,
+              outputRange: [
+                1, 1, 1, 0
+              ]
+            })
+
+            return(
+              <CustimChildCard
+                data={item}
+                onPress={() => {
+                  setSelectedChild(item)
+                  toggleModal(true)
+                }}
+                opacity={opacity}
+                scale={scale}
+              />)
+            }}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY}}}],
+            { useNativeDriver:true }
+          )}
+          // onViewableItemsChanged={({ viewableItems: items }) => {
+          //   viewableItems.value = items
+          // }}
         />
 
       </>
 
       <View
-        style={styles.floating}
+        style={[styles.floating, { display: role === 'Parent' ? 'flex' : 'none' }]}
       >
         <Fab
           variant="clustered"
@@ -179,6 +203,8 @@ const ChildrenScreen: FC = () => {
           onClose={() => toggleModal(false)}
           onOK={onAddOK}
           data={selectedChild}
+          role={role || ""}
+          gender={selectedGender}
         />
       </CustomModal>
     </SafeAreaView>

@@ -11,7 +11,8 @@ export const childCardStyles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
     justifyContent: 'space-between',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    height: 100,
   },
   imgWapper: {
     width: 70,

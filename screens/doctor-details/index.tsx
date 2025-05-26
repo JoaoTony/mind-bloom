@@ -1,14 +1,18 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import * as Linking from 'expo-linking';
 
 import { doctorDetailsSyles as styles} from "./doctor-details.styles"
-import { Image, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {  router, useLocalSearchParams } from "expo-router";
 import { Stars } from "@/components/stars";
 import Animated, { FadeIn, FadeInDown, FadeInLeft, FadeInRight, BounceInDown, useAnimatedStyle, withSpring, useSharedValue} from "react-native-reanimated";
+import StarRating from "./reting";
+import { CustomModal } from "@/components/modal";
+import { API } from "@/services/api";
+import { apiEndpoints } from "@/constants/api-endpoints";
 
 const links = {
   linkedin: 'https://www.linkedin.com',
@@ -21,7 +25,21 @@ const sendUserToExternalLink = (url: string) => {
   Linking.openURL(url)
 }
 
+const parseSocials = (socials: string): string[] => {
+  return socials.split(',').map(item => item.trim());
+};
+
 const DOCTOR = require('@/assets/images/african-american-black-doctor-man-with-stethoscope-isolated-white-background 1.png')
+
+const goToChat = (parentName: string, parentID: string) => {
+  router.push({
+    pathname: "/chat",
+    params: {
+      parentID,
+      parentName,
+    }
+  });
+}
 
 const DoctorDetails: FC = () => {
   const goBack = () => {
@@ -29,6 +47,7 @@ const DoctorDetails: FC = () => {
   }
 
   const {
+    id,
     name,
     avatar,
     occupation,
@@ -45,11 +64,51 @@ const DoctorDetails: FC = () => {
     })
   }, [])
 
+  const [showModal, setShowModal] = useState(false)
+
+  const [rading, setRating] = useState<null | number>(null)
+  const [value, setValue] = useState(0)
+  const [facebook, setFacebook] = useState("")
+  const [number, setNumber] = useState("")
+
+
+  const [loading, setLoading] = useState(false)
+
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateY: translateY.value }],
     }
   })
+
+  const rating = async () => {
+    const { data, statusCode } = await API.patch(`/users/${id}`, { rating: value}, setLoading)
+
+    if(statusCode === 200) {
+      setRating(data?.rating)
+      //setValue()
+      setShowModal(false)
+    }
+  }
+
+    const getUser = async (isLoading?: (lading: boolean) => void) => {
+      const { data } = await API.get(`${apiEndpoints.me}/${id}`, {}, isLoading)
+
+
+      if(data.id) {
+         setFacebook(parseSocials(data?.socials)[0])
+      setNumber(parseSocials(data?.socials)[1])
+      }
+      console.log("Data:",data)
+    }
+
+    useEffect(() => {
+      getUser()
+    }, [])
+
+
+  useEffect(() => {
+    setRating(null)
+  }, [])
 
   return(
     <View
@@ -70,7 +129,7 @@ const DoctorDetails: FC = () => {
         <Animated.Image
           //sharedTransitionTag="sharedTag"
           //sharedTransitionStyle={{ }}
-          source={avatar as any}
+          source={{ uri: avatar as any}}
           style={styles.image}
           entering={FadeInRight.duration(400).delay(200)}
         />
@@ -99,7 +158,12 @@ const DoctorDetails: FC = () => {
           entering={FadeInLeft.duration(400).delay(400)}
         >
 
-          <Stars stars={star as any}/>
+        <TouchableOpacity onPress={() => setShowModal(true)}>
+
+          <Stars stars={rading || star as any}/>
+        </TouchableOpacity>
+
+
         </Animated.View>
 
         <View style={styles.tabSeparator} />
@@ -115,13 +179,36 @@ const DoctorDetails: FC = () => {
           style={styles.social}
           entering={FadeInDown.duration(400).delay(600)}
         >
-        <AntDesign name="instagram" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(links.instagram)}/>
-        <AntDesign name="linkedin-square" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(links.linkedin)}/>
-        <AntDesign name="twitter" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(links.twitter)}/>
-        <FontAwesome name="whatsapp" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(links.whatsapp)}/>
+        {/* <AntDesign name="instagram" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(links.instagram)}/>
+        <AntDesign name="linkedin-square" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(links.linkedin)}/> */}
+        {facebook && <AntDesign name="facebook-square" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(facebook)}/>}
+       {number &&  <FontAwesome name="whatsapp" size={24} color="#2E4A66" onPress={() => sendUserToExternalLink(`https://api.whatsapp.com/send?phone=+244${number}`)}/>}
         </Animated.View>
 
+        <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => goToChat(name?.toString() || "", id?.toString() || "")}>
+          <Text style={styles.sendMessage}>Enviar mensagem</Text>
+        </TouchableOpacity>
+
       </Animated.View>
+
+      <CustomModal
+        isVisible={showModal}
+        title="Avaliação"
+        onClose={() => setShowModal(false)}
+      >
+        <View>
+          <StarRating
+            initialRating={Number(rading || star || 0)}
+            onRatingChange={setValue}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={rating}>
+           {loading?
+           <ActivityIndicator  color={"#fff"} size="small"/>
+           : <Text style={styles.buttonText}>Avaliar</Text>}
+          </TouchableOpacity>
+        </View>
+      </CustomModal>
     </View>
   )
 }

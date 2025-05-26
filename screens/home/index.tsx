@@ -1,11 +1,14 @@
-import {FC} from "react"
-import { ScrollView , SafeAreaView, FlatList} from "react-native"
+import {FC, useCallback, useEffect, useState} from "react"
+import { ScrollView , SafeAreaView, FlatList, RefreshControl, ActivityIndicator, Text, View} from "react-native"
 import { homeSyles } from "./home.styles"
 import { HomeHeader } from "./components/header"
 import { HomeSearch } from "./components/serach"
 import { HomeBanner } from "./components/banner"
 import { Categories } from "../../components/categories"
 import { DoctorCard } from "@/components/doctor-card"
+import { apiEndpoints } from "@/constants/api-endpoints"
+import { API } from "@/services/api"
+import { useFocusEffect } from "expo-router"
 
 const Doctor = require("@/assets/images/doctor.png")
 
@@ -28,29 +31,100 @@ const doctors = [
   }
 ];
 
+const formatItem = (item: any) => {
+  return {
+    name: item?.name || '',
+    star: item?.rating || 0,
+    occupation: item?.occupation || '',
+    description: item?.description || '',
+    avatar: item?.image,
+    id: item?.id,
+  }
+}
+
+const filter = (list: any[]) => {
+  return list.filter(item => item.role === "Psychologist")?.map(formatItem)
+}
+
 
 const HomeScreen: FC = () => {
+  const [refreshing, setRefreshing] = useState(false)
+  const [list, setList] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+
+  const getUsers = async (onLoading?: (isLoading: boolean) => void) => {
+    const { data, statusCode } = await API.get(`${apiEndpoints.me}?role=Psychologist`, {}, onLoading)
+
+
+    if(statusCode === 200) {
+      setList(filter(data?.data || []))
+    }
+   // console.log("Dataaaa:",data)
+  }
+
+  console.log("listagem:", list, list?.length)
+
+  useEffect(() => {
+    getUsers(setLoading)
+  }, [])
+
+  const onRefresh = useCallback(() => {
+    getUsers(setRefreshing)
+  }, [refreshing]);
+
+  useFocusEffect(
+    useCallback(() => {
+
+      getUsers()
+
+    }, [])
+  );
+
   return(
     <SafeAreaView style={homeSyles.container}>
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         ListHeaderComponent={
           <>
             <HomeHeader/>
             {/* <HomeSearch/> */}
             <HomeBanner/>
             <Categories/>
+            <Text style={homeSyles.title}>Pisicólogos</Text>
           </>
         }
         contentContainerStyle={{
-          paddingBottom: 30
+          paddingBottom: 130
         }}
-        data={doctors}
+        data={list}
         keyExtractor={item => item.id?.toString()}
         renderItem={({item}) => (
           <DoctorCard {...item}/>
         )}
         style={homeSyles.content}
-
+         ListEmptyComponent={(
+            <>
+              {loading && (
+                <View style={{
+                  flex: 1,
+                  marginTop: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                  <ActivityIndicator size="small" color="#144467"/>
+                </View>
+              )}
+              {!loading && !list.length && (
+                <View
+                  style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <Text>Lista vazia</Text>
+                </View>
+              )}
+            </>
+          )}
       />
     </SafeAreaView>
   )

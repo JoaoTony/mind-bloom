@@ -20,26 +20,61 @@ export const signUpErrorMessage = (statusCode: number) => {
   }
 }
 
+const roles = [
+  {
+    label: "Encarregado(a)",
+    value: "Parent"
+  },
+  {
+    label: "Médico(a)",
+    value: "Psychologist"
+  }
+]
+
+export const genders = [
+  {
+    label: "Masculino",
+    value: "male"
+  },
+  {
+    label: "Feminino",
+    value: "Female"
+  }
+]
+
 export const SignUpForm: FC = () => {
 
   const [email, setEmail] = useState("")
   const [name, setName] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setconfirmPassword] = useState("")
+  const [gender, setGender] = useState("")
+  const [role, setRole] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [occupation, setOccupation] = useState("")
 
   const signUp = async () => {
     if(password !== confirmPassword) {
       setError(signUpErrorMessage(700))
       return
     }
-     const { statusCode, data } = await API.post<any>(apiEndpoints.signUp, {
+    console.log("Vamos ver:", {
       email,
       password,
-      role: 'Parent',
-      name
-
+      role,
+      name,
+      gender
+    })
+    const { statusCode, data } = await API.post<any>(apiEndpoints.signUp, {
+      email,
+      password,
+      role,
+      name,
+      gender,
+      rating: 0,
+      occupation,
+      description: ''
     }, setLoading)
 
     console.log("SSS:", data, statusCode)
@@ -72,6 +107,25 @@ export const SignUpForm: FC = () => {
           setError("")
         }}
       />
+      <InputSelect
+        placeholder="Gênero"
+        data={genders}
+        onChangeText={setGender}
+      />
+      <InputSelect
+        placeholder="Tipo de usuário"
+        data={roles}
+        onChangeText={setRole}
+      />
+      {role === "Psychologist" && (
+         <Input
+          placeholder="Profissão"
+          onChangeText={text => {
+            setOccupation(text)
+            setError("")
+          }}
+        />
+      )}
       <Input
         placeholder="Senha"
         secureTextEntry

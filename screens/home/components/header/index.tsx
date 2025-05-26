@@ -6,8 +6,18 @@ import { useStorageState } from "@/constants/async-storage";
 import { apiEndpoints } from "@/constants/api-endpoints";
 import { API } from "@/services/api";
 import { AntDesign } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 const AVATAR = require("@/assets/images/avatar.png")
+
+const goToChat = () => {
+  router.push({
+    pathname: '/parent-chat-list',
+    params: {
+      type: 'Parent'
+    }
+  })
+}
 
 export const HomeHeader: FC = () => {
   const [name, setName] = useState("")
@@ -54,9 +64,10 @@ export const HomeHeader: FC = () => {
         </View>
       </View>
 
-      {/* <TouchableOpacity>
-        <Ionicons name="notifications" size={26} color="black" />
-      </TouchableOpacity> */}
+      <TouchableOpacity onPress={goToChat}>
+        <Ionicons name="chatbubble" size={26} color="#3b4bc0" />
+        {/* <Ionicons name={isFocused ? "chatbubble" : "chatbubble-outline"}  color={isFocused ? selectedColor : '#fff'}  size={20} style={{ marginRight: 3 }} /> */}
+      </TouchableOpacity>
     </View>
   )
 }

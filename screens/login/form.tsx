@@ -8,7 +8,7 @@ import { apiEndpoints } from "@/constants/api-endpoints";
 import { API } from "@/services/api";
 import { useStorageState } from "@/hooks/useStorageState";
 import { USER_ACCESS_TOKEN } from "@/constants";
-import { asyncSetToken, asyncSetUserID } from "@/constants/async-storage";
+import { asyncSetToken, asyncSetUserID, asyncSetUserRole } from "@/constants/async-storage";
 
 export const signInErrorMessage = (statusCode: number) => {
   switch (statusCode) {
@@ -32,6 +32,7 @@ export const LoginForm: FC = () => {
     if(data?.token?.token) {
       await asyncSetToken(data?.token?.token);
       await asyncSetUserID(data?.token?.id || "")
+      await asyncSetUserRole(data?.token?.role || "Psychologist")
 
       router.replace("/(tabs)")
     }

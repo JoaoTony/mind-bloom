@@ -12,6 +12,7 @@ import { ConfirmModal } from "./confirm-modal";
 import { useStorageState } from "@/constants/async-storage";
 import { useLoop } from "@/hooks/useLoop";
 import Animated, { Easing, useAnimatedStyle, useDerivedValue, useSharedValue, withRepeat, withSpring, withTiming } from "react-native-reanimated";
+import { ShakingText } from "@/components/shacking-text";
 
 const TEA = require('@/assets/images/tea.png')
 const TDAH = require('@/assets/images/tdah.png')
@@ -158,9 +159,14 @@ const NewTest: FC = () => {
           source={testType === 'TEA' ? TEA : TDAH}
         />
         <Animated.View style={[styles.content, animatedStyleBounce]}>
-          <Text style={styles.quation}>
+
+          <ShakingText
+            style={styles.quation}
+            text={selected.text}
+          />
+          {/* <Text style={styles.quation}>
             {selected.text}
-          </Text>
+          </Text> */}
 
 
           <View style={styles.footer}>

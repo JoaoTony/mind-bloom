@@ -29,11 +29,12 @@ export const doctorDetailsSyles = StyleSheet.create({
   imageWrapper: {
     width: '100%',
     height: height * 0.6 - 100,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
     height: '100%',
-    maxWidth: '70%',
+    width: '100%',
+    objectFit: 'contain'
   },
   name: {
     fontSize: 24,
@@ -62,6 +63,26 @@ export const doctorDetailsSyles = StyleSheet.create({
     justifyContent: 'center',
     gap: 20,
     marginTop: 40,
-    marginBottom: 40
+    marginBottom: 40,
+    //height:
+  },
+   button: {
+    height: 50,
+    borderRadius: 8,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#3b4bc0',
+    marginTop: 20
+  },
+  buttonText: {
+    fontSize: 14,
+    fontWeight: 700,
+    color: "#fff"
+  },
+  sendMessage: {
+    fontSize: 14,
+    fontWeight: 800,
+    color: "#3b4bc0"
   }
 })

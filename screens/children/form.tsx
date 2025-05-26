@@ -6,14 +6,27 @@ import { childrenStyles as styles } from "./children.styles"
 import { useStorageState } from "@/constants/async-storage";
 import { API } from "@/services/api";
 import { apiEndpoints } from "@/constants/api-endpoints";
+import { router } from "expo-router";
 
 export type ChindrenModalFormProps = {
   onClose: () => void,
   onOK: () => void
-  data?: any
+  data?: any,
+  role: string,
+  gender: string,
 }
 
-export const ChindrenModalForm: FC<ChindrenModalFormProps> = ({ onClose, data, onOK }) => {
+const goToChat = (parentName: string, parentID: string) => {
+  router.push({
+    pathname: "/chat",
+    params: {
+      parentID,
+      parentName,
+    }
+  });
+}
+
+export const ChindrenModalForm: FC<ChindrenModalFormProps> = ({ onClose, data, onOK, role, gender }) => {
   const [name, setName] = useState("")
   const [dateofBirth, setDateofBirth] = useState("")
   const [loading, setLoading] = useState(false)
@@ -25,8 +38,10 @@ export const ChindrenModalForm: FC<ChindrenModalFormProps> = ({ onClose, data, o
     let objectToUpdate = {
       name,
       dateofBirth,
-      gender: "male"
+      gender
     } as any
+
+    console.log("Vamos ver:", objectToUpdate)
 
     if(!edit) {
       objectToUpdate.parent_id = id
@@ -39,14 +54,10 @@ export const ChindrenModalForm: FC<ChindrenModalFormProps> = ({ onClose, data, o
       setLoading
     )
 
-    console.log("SSS:", `${apiEndpoints.kids?.replace("{parent_id}", id || "")}${edit ? `/${data?.id || ""}` : ""}`)
-
     if (statusCode === 201) {
       onOK?.()
     }
   }
-
-  console.log("Data: ", data, data?.id, data?.adhdDiagnosisPercentage)
 
   return(
     <View style={{ width: '100%', gap: 10, marginTop: 20 }}>
@@ -90,6 +101,22 @@ export const ChindrenModalForm: FC<ChindrenModalFormProps> = ({ onClose, data, o
             defaultValue={data?.asdDiagnosisPercertage?.toString() || "0"}
             editable={false}
           />
+        </View>
+      )}
+
+      {role?.toString() === 'Psychologist' && (
+         <View style={styles.buttons}>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: '#3b4bc0', flex: 1 }]}
+          onPress={() => {
+            onClose()
+            goToChat(data?.parent?.name || "", data?.parent?.id || "")
+          }}
+        >
+          <Text style={[styles.buttonText, { color: "#fff" }]}>
+            Contactar encarregado
+          </Text>
+        </TouchableOpacity>
         </View>
       )}
 

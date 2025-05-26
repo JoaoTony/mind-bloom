@@ -1,28 +1,18 @@
 import { ChildCard } from "@/components/child-card"
 import { FC, memo } from "react"
 import { View, ViewToken } from "react-native"
-import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated"
+import { Animated } from "react-native"
 
 type CustimChildCardProps = {
   data: any,
-  viewableItems: Animated.SharedValue<ViewToken[]>
+  scale: Animated.AnimatedInterpolation<string | number>
+  opacity: Animated.AnimatedInterpolation<string | number>
   onPress: () => void
 }
 
-export const CustimChildCard : FC<CustimChildCardProps> = memo(({ data, onPress, viewableItems }) => {
-  const rStyle = useAnimatedStyle(() => {
-    const isVisible = Boolean(viewableItems.value.filter(item => item.isViewable).find((viewableItem) => viewableItem.item.id === data.id))
-
-    return {
-      opacity: withTiming(isVisible ? 1: 0),
-      transform: [{
-        scale: withTiming(isVisible ? 1: 0.6)
-      }]
-    }
-  })
-
+export const CustimChildCard : FC<CustimChildCardProps> = memo(({ data, onPress, scale, opacity }) => {
   return (
-    <Animated.View style={rStyle}>
+    <Animated.View style={{ transform: [{ scale }], opacity }}>
       <ChildCard
         {...(data as any)}
         testType={"" as any}

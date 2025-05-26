@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { learnMoreStyles as styles} from "./learn-more.styles"
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -7,6 +7,9 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import {  router, useGlobalSearchParams, useRootNavigationState, useLocalSearchParams } from "expo-router";
 import { Stars } from "@/components/stars";
 import { data } from "./data";
+import Animated, { Easing, useAnimatedStyle, useDerivedValue, useSharedValue, withRepeat, withSpring, withTiming } from "react-native-reanimated";
+import { ShakingText } from "@/components/shacking-text";
+
 
 const TEA = require('@/assets/images/tea.png')
 const TDAH = require('@/assets/images/tdah.png')
@@ -33,6 +36,39 @@ const LearnMore: FC = () => {
     if(cantNext) return
     setIndex(prev => prev + 1)
   }
+
+    const scale = useSharedValue(1)
+
+      useEffect(() => {
+      scale.value = withRepeat(
+        withTiming(1.1, {
+          duration: 1000,
+          easing: Easing.inOut(Easing.ease),
+        }),
+        -1, // -1 = infinito
+        true // reverse = sim
+      )
+    }, [])
+
+    const animatedStyle = useAnimatedStyle(() => ({
+      transform: [{ scale: scale.value }]
+    }))
+
+      const translateY = useSharedValue(50)
+
+
+      useEffect(() => {
+        translateY.value = withSpring(0, {
+          damping: 10,
+          stiffness: 150,
+        })
+      }, [])
+
+      const animatedStyleBounce = useAnimatedStyle(() => {
+        return {
+          transform: [{ translateY: translateY.value }],
+        }
+      })
 
   return(
     <View
@@ -62,23 +98,30 @@ const LearnMore: FC = () => {
         }}
       >
 
-        <Image
-          style={styles.image}
+
+
+        <Animated.Image
+          style={[styles.image, animatedStyle]}
           source={type === 'TEA' ? TEA : TDAH}
         />
        {index === 0 &&
        (
-          <Text style={styles.whatIs}>O que é o {' '}
+          <Animated.Text style={[styles.whatIs, animatedStyleBounce]}>O que é o {' '}
             <Text style={[
               styles.whatIsHighlighted,
               type === 'TDAH' && { color: '#a5b7ec' }
               ]}>
               {type || ''}?
             </Text>
-          </Text>
+          </Animated.Text>
         )}
 
-        <Text style={styles.text}>{chooseData.texts[index]}</Text>
+        {/* <Animated.Text style={[styles.text, animatedStyleBounce]}> */}
+          <ShakingText
+            style={{...styles.text, ...animatedStyleBounce}}
+            text={chooseData.texts[index]}
+          />
+        {/* </Animated.Text> */}
       </ScrollView>
 
       <View style={styles.footer}>

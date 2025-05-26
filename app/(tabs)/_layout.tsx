@@ -6,8 +6,9 @@ import { initAPI } from "@/services/api";
 import { useSession } from "@/context/auth-contex";
 import { View } from "react-native";
 import { USER_ACCESS_TOKEN } from "@/constants";
-import { useStorageState } from "@/constants/async-storage";
+import { useRole, useStorageState } from "@/constants/async-storage";
 import CustomBottomTab from "@/components/custom-bottom-tab";
+import { PortalProvider } from "@/context/portal";
 
 export default function TabLayout() {
    useEffect(() => {
@@ -16,10 +17,11 @@ export default function TabLayout() {
 
   const { loading, token } = useStorageState();
 
-  console.log("session", token)
+  const { loading: loadingRole, role } = useRole()
 
+  console.log("Role:", role)
 
-  if(loading) return <View style={{ flex: 1, backgroundColor: '#fff' }}></View>
+  if(loading || loadingRole) return <View style={{ flex: 1, backgroundColor: '#fff' }}></View>
 
   if (!token) {
     return <Redirect href="/login" />;
@@ -34,10 +36,11 @@ export default function TabLayout() {
       // tabBar={}
       // backBehavior="history"
       tabBar={props => (
-        <CustomBottomTab {...props} />
+        <CustomBottomTab {...props} role={role || ""}/>
       )}
 
     >
+       <PortalProvider>
       <Tabs.Screen
         name="index"
         options={{
@@ -75,6 +78,7 @@ export default function TabLayout() {
           ),
         }}
       />
+    </PortalProvider>
     </Tabs>
   );
 }

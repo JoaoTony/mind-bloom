@@ -15,12 +15,13 @@ export const doctorCardSyles = StyleSheet.create({
     height: 85,
     borderRadius: 10,
     backgroundColor: '#fff',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    padding: 12
   },
   imag: {
-    width: '80%',
-    height: '90%',
-    marginLeft: '10%'
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain'
   },
   name: {
     fontSize: 20,

@@ -10,6 +10,7 @@ export const homeBannerSyles = StyleSheet.create({
     // backgroundColor: '#3b4bc0',
     marginTop: 40,
     position: 'relative',
+    overflow: 'hidden'
   },
   text: {
     color: '#fff',
@@ -24,6 +25,7 @@ export const homeBannerSyles = StyleSheet.create({
     height: '120%',
     //marginTop: '10%',
     borderRadius: 10,
+    top: -20,
     zIndex: 3,
   }
 

@@ -5,7 +5,6 @@ export const userSyles = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: '#fff',
-    alignItems: 'center',
     paddingBottom: 100
   },
   content: {
@@ -20,7 +19,8 @@ export const userSyles = StyleSheet.create({
     height: 300,
     //borderRadius: 50,
     backgroundColor: '#c4d3ff',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    alignItems: 'center'
 
   },
   avatarWrapperWrapper: {
@@ -29,7 +29,6 @@ export const userSyles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: '#fff',
     marginBottom: -50,
-    marginLeft: 20,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,

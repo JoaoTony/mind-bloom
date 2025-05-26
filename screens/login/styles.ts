@@ -1,3 +1,4 @@
+import { defualtTheme } from "@/styles/theme"
 import { StyleSheet, Dimensions } from "react-native"
 
 const { width } = Dimensions.get("screen")
@@ -29,7 +30,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     borderRadius: 8,
-    backgroundColor: '#2E4A66',
+    backgroundColor: defualtTheme.colors.green.dark,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20

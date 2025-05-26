@@ -36,6 +36,8 @@ export const ChildCard: FC<Props> = ({ name, asdDiagnosisPercertage, adhdDiagnos
     });
   }
 
+  console.log("gender:", gender)
+
   return(
     <TouchableOpacity
       style={styles.container}
@@ -51,7 +53,7 @@ export const ChildCard: FC<Props> = ({ name, asdDiagnosisPercertage, adhdDiagnos
           />
       </View>
       <View>
-        <Text style={styles.name}>{name}</Text>
+        <Text numberOfLines={1} style={styles.name}>{name}</Text>
         <Text  style={styles.occupation}>{gender === "female" ? "Feminino" : "Masculino"}</Text>
         <Text  style={styles.occupation}>{dateOfBirth}</Text>
       </View>
